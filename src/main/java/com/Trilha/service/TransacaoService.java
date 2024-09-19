@@ -1,6 +1,7 @@
 package com.Trilha.service;
 
 import com.Trilha.model.Transacao;
+import com.Trilha.repository.CategoriaRepository;
 import com.Trilha.repository.TransacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,8 @@ public class TransacaoService {
 
     @Autowired
     private TransacaoRepository transacaoRepository;
+    @Autowired
+    private CategoriaRepository categoriaRepository;
 
     public Transacao saveOrUpdateTransaction(Transacao transacao) {
         return transacaoRepository.save(transacao);

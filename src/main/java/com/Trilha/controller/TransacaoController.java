@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/transacao")
+@RequestMapping("/api/transacao")
 public class TransacaoController {
 
     @Autowired
@@ -31,8 +31,8 @@ public class TransacaoController {
     // Buscar todas as transações
     @GetMapping
     public ResponseEntity<List<Transacao>> getAllTransactions() {
-        List<Transacao> transacaos = transacaoService.getAllTransactions();
-        return ResponseEntity.ok(transacaos);
+        List<Transacao> transacoes = transacaoService.getAllTransactions();
+        return ResponseEntity.ok(transacoes);
     }
 
     // Excluir uma transação por ID
