@@ -24,7 +24,14 @@ public class Transacao {
     private Double valor;
     private LocalDate data;
 
+
+
     @ManyToOne
     @JoinColumn(name = "user_id") // chave primaria do Usuario
     private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
+
 }
