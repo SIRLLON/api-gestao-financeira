@@ -1,12 +1,14 @@
-package com.Trilha.controller;
+package com.trilha.controller;
 
-import com.Trilha.model.Transacao;
-import com.Trilha.service.TransacaoService;
+import com.trilha.model.Categoria;
+import com.trilha.model.Transacao;
+import com.trilha.service.TransacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -40,5 +42,12 @@ public class TransacaoController {
     public ResponseEntity<Void> deleteTransactionById(@PathVariable Long id) {
         transacaoService.deleteTransactionById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/summary")
+    public ResponseEntity<Map<Categoria, Double>> getExpenseSummary(
+            @RequestParam Long userId) {
+        Map<Categoria, Double> summary = transacaoService.getExpenseSummaryByCategory(userId);
+        return ResponseEntity.ok(summary);
     }
 }

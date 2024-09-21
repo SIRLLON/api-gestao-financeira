@@ -1,4 +1,4 @@
-package com.Trilha.model;
+package com.trilha.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
