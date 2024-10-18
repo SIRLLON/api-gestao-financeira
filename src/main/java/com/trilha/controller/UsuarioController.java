@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +22,9 @@ public class UsuarioController {
     @PostMapping
     public ResponseEntity<Usuario> createUser(@RequestBody Usuario usuario) {
         Usuario createdUsuario = usuarioService.saveUser(usuario);
-        return ResponseEntity.ok(createdUsuario);
+//        return ResponseEntity.ok(createdUsuario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUsuario);
+
     }
 
     @GetMapping
