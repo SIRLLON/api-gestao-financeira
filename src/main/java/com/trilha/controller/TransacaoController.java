@@ -2,6 +2,7 @@ package com.trilha.controller;
 
 import com.trilha.model.Categoria;
 import com.trilha.model.CurrencyConversionRequest;
+import com.trilha.model.CurrencyConversionResult;
 import com.trilha.model.Transacao;
 import com.trilha.service.ExchangeRateService;
 import com.trilha.service.TransacaoService;
@@ -26,17 +27,17 @@ public class TransacaoController {
 
 
     @GetMapping("/converter")
-    public ResponseEntity<Double> convertCurrency(
+    public ResponseEntity<CurrencyConversionResult> convertCurrency(
             @RequestParam String from,
             @RequestParam String to,
             @RequestParam Double valor) {
-        Double convertedValue = exchangeRateService.convertCurrency(from, to, valor);
+        CurrencyConversionResult convertedValue = exchangeRateService.convertCurrency(from, to, valor);
         return ResponseEntity.ok(convertedValue);
     }
 
     @PostMapping("/converter")
-    public ResponseEntity<Double> convertCurrency(@RequestBody CurrencyConversionRequest request) {
-        Double convertedValue = exchangeRateService.convertCurrency(request.getFrom(), request.getTo(), request.getValor());
+    public ResponseEntity<CurrencyConversionResult> convertCurrency(@RequestBody CurrencyConversionRequest request) {
+        CurrencyConversionResult convertedValue = exchangeRateService.convertCurrency(request.getFrom(), request.getTo(), request.getValor());
         return ResponseEntity.ok(convertedValue);
     }
 
