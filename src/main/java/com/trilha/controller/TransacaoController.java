@@ -30,14 +30,12 @@ public class TransacaoController {
         return transaction.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Buscar todas as transações
     @GetMapping
     public ResponseEntity<List<Transacao>> getAllTransactions() {
         List<Transacao> transacoes = transacaoService.getAllTransactions();
         return ResponseEntity.ok(transacoes);
     }
 
-    // Excluir uma transação por ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTransactionById(@PathVariable Long id) {
         transacaoService.deleteTransactionById(id);

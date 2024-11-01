@@ -4,12 +4,11 @@ import com.trilha.model.Usuario;
 import com.trilha.service.ExcelImportService;
 import com.trilha.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,8 +43,8 @@ public class UsuarioController {
         return updatedUser.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Deletar um usuário
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('TESTSC')")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         usuarioService.deleteUser(id);
         return ResponseEntity.noContent().build();
@@ -56,6 +55,7 @@ public class UsuarioController {
 
     // Endpoint para importar usuários via planilha Excel
     @PostMapping("/import")
+    @PreAuthorize("hasRole('TESTSC')")
     public ResponseEntity<String> importUsersFromExcel(@RequestParam("file") MultipartFile file) {
         String result = usuarioService.importUsersFromExcel(file, excelImportService);
         return ResponseEntity.ok(result);

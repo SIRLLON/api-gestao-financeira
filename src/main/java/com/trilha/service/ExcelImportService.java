@@ -40,7 +40,6 @@ public class ExcelImportService {
                 usuarios.add(usuario);
             }
         }
-        // Salva todos os usuários no banco de dados
         usuarioRepository.saveAll(usuarios);
     }
 }
