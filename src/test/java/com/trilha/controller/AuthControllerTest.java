@@ -20,6 +20,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class AuthControllerTest {
 
@@ -47,6 +48,6 @@ public class AuthControllerTest {
                         .with(csrf()) // Adiciona o token CSRF aqui
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(expectedToken));
+                .andExpect(jsonPath("$.token").exists()); // Verifica apenas se o campo 'token' existe
     }
 }

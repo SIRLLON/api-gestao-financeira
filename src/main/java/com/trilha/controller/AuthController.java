@@ -18,8 +18,8 @@ public class AuthController {
 
     // Endpoint para obter o token JWT
     @GetMapping("/token")
-    public ResponseEntity<String> getToken() {
+    public ResponseEntity<TokenResponse> getToken() {
         String token = jwtUtil.generateToken("app-user");
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(new TokenResponse(token));
     }
 }
