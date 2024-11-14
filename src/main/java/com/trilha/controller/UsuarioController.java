@@ -1,61 +1,54 @@
-package com.Trilha.controller;
+package com.trilha.controller;
 
-import com.Trilha.model.Usuario;
-import com.Trilha.service.ExcelImportService;
-import com.Trilha.service.UsuarioService;
+import com.trilha.model.Usuario;
+import com.trilha.service.ExcelImportService;
+import com.trilha.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/users")
-public class UserController {
+@RequestMapping("/api/usuarios")
+public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
 
-    // Criar um novo usuário
     @PostMapping
-    public ResponseEntity<Usuario> createUser(@RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> createUser(@Valid @RequestBody Usuario usuario) {
         Usuario createdUsuario = usuarioService.saveUser(usuario);
         return ResponseEntity.ok(createdUsuario);
     }
 
-    // Obter todos os usuários
     @GetMapping
     public ResponseEntity<List<Usuario>> getAllUsers() {
         List<Usuario> users = usuarioService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
-    // Obter um usuário por ID
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> getUserById(@PathVariable Long id) {
         Optional<Usuario> user = usuarioService.getUserById(id);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Atualizar um usuário
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> updateUser(@PathVariable Long id, @RequestBody Usuario usuario) {
         Optional<Usuario> updatedUser = usuarioService.updateUser(id, usuario);
         return updatedUser.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Deletar um usuário
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('TESTSC')")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        if (usuarioService.deleteUser(id)) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        usuarioService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 
     @Autowired
@@ -63,12 +56,9 @@ public class UserController {
 
     // Endpoint para importar usuários via planilha Excel
     @PostMapping("/import")
+    @PreAuthorize("hasRole('TESTSC')")
     public ResponseEntity<String> importUsersFromExcel(@RequestParam("file") MultipartFile file) {
-        try {
-            excelImportService.importUsersFromExcel(file);
-            return new ResponseEntity<>("Users imported successfully!", HttpStatus.OK);
-        } catch (IOException e) {
-            return new ResponseEntity<>("Error occurred while processing the file.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        String result = usuarioService.importUsersFromExcel(file, excelImportService);
+        return ResponseEntity.ok(result);
     }
 }
