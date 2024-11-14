@@ -3,6 +3,7 @@ package com.trilha.controller;
 import com.trilha.model.Usuario;
 import com.trilha.service.ExcelImportService;
 import com.trilha.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,7 +21,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<Usuario> createUser(@RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> createUser(@Valid @RequestBody Usuario usuario) {
         Usuario createdUsuario = usuarioService.saveUser(usuario);
         return ResponseEntity.ok(createdUsuario);
     }

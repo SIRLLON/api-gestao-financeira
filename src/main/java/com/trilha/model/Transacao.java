@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -21,6 +23,8 @@ public class Transacao {
     private Long id;
     private String descricao;
     private Double valor;
+    @NotNull(message = "A data não pode ser nula.")
+    @PastOrPresent(message = "A data deve ser do passado ou presente.")
     private LocalDate data;
 
     @ManyToOne
