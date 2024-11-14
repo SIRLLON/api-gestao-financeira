@@ -1,10 +1,13 @@
-package com.Trilha.service;
+package com.trilha.service;
 
-import com.Trilha.model.Usuario;
-import com.Trilha.repository.UsuarioRepository;
+import com.trilha.exception.UsuarioNotFoundException;
+import com.trilha.model.Usuario;
+import com.trilha.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,11 +37,19 @@ public class UsuarioService {
         return Optional.empty();
     }
 
-    public boolean deleteUser(Long id) {
-        if (usuarioRepository.existsById(id)) {
-            usuarioRepository.deleteById(id);
-            return true;
+    public void deleteUser(Long id) {
+        if (!usuarioRepository.existsById(id)) {
+            throw new UsuarioNotFoundException("Usuário com ID " + id + " não encontrado.");
         }
-        return false;
+        usuarioRepository.deleteById(id);
+    }
+
+    public String importUsersFromExcel(MultipartFile file, ExcelImportService excelImportService) {
+        try {
+            excelImportService.importUsersFromExcel(file);
+            return "Users imported successfully!";
+        } catch (IOException e) {
+            throw new RuntimeException("Error occurred while processing the file.", e);
+        }
     }
 }

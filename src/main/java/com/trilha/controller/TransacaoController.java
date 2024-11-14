@@ -1,16 +1,18 @@
-package com.Trilha.controller;
+package com.trilha.controller;
 
-import com.Trilha.model.Transacao;
-import com.Trilha.service.TransacaoService;
+import com.trilha.model.Categoria;
+import com.trilha.model.Transacao;
+import com.trilha.service.TransacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/transacao")
+@RequestMapping("/api/transacao")
 public class TransacaoController {
 
     @Autowired
@@ -28,17 +30,22 @@ public class TransacaoController {
         return transaction.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Buscar todas as transações
     @GetMapping
     public ResponseEntity<List<Transacao>> getAllTransactions() {
-        List<Transacao> transacaos = transacaoService.getAllTransactions();
-        return ResponseEntity.ok(transacaos);
+        List<Transacao> transacoes = transacaoService.getAllTransactions();
+        return ResponseEntity.ok(transacoes);
     }
 
-    // Excluir uma transação por ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTransactionById(@PathVariable Long id) {
         transacaoService.deleteTransactionById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/summary")
+    public ResponseEntity<Map<Categoria, Double>> getExpenseSummary(
+            @RequestParam Long userId) {
+        Map<Categoria, Double> summary = transacaoService.getExpenseSummaryByCategory(userId);
+        return ResponseEntity.ok(summary);
     }
 }

@@ -1,7 +1,7 @@
-package com.Trilha.service;
+package com.trilha.service;
 
-import com.Trilha.model.Usuario;
-import com.Trilha.repository.UsuarioRepository;
+import com.trilha.model.Usuario;
+import com.trilha.repository.UsuarioRepository;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -40,7 +40,6 @@ public class ExcelImportService {
                 usuarios.add(usuario);
             }
         }
-        // Salva todos os usuários no banco de dados
         usuarioRepository.saveAll(usuarios);
     }
 }

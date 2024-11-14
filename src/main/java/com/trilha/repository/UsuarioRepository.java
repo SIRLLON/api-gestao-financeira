@@ -1,6 +1,6 @@
-package com.Trilha.repository;
+package com.trilha.repository;
 
-import com.Trilha.model.Usuario;
+import com.trilha.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
