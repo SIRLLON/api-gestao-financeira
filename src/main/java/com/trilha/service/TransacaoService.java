@@ -30,6 +30,9 @@ public class TransacaoService {
     private CategoriaService categoriaService;
 
     @Autowired
+    private ExchangeRateService exchangeRateService;
+
+    @Autowired
     private TransacaoRepository transacaoRepository;
 
     public TransactionResponse  createTransacao(TransactionRequest transactionRequest) {
@@ -51,17 +54,53 @@ public class TransacaoService {
         Transacao savedTransacao = transacaoRepository.save(transacao);
         UsuarioResponse usuarioResponse = UsuarioMapper.toUsuarioResponse(savedTransacao.getUsuario());
         String formattedDate = savedTransacao.getData().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        Double convertedValue = null; // Se não for uma conversão, pode deixar como null
+        Double exchangeRate = null; // Se não for uma conversão, pode deixar como null
 
-        TransactionResponse transactionResponse = new TransactionResponse(
+        return new TransactionResponse(
                 savedTransacao.getId(),
                 savedTransacao.getDescricao(),
                 savedTransacao.getValor(),
                 formattedDate, // Data formatada
+                convertedValue, // Valor convertido (null para criar transação)
+                exchangeRate,   // Taxa de câmbio (null para criar transação)
                 usuarioResponse,
                 savedTransacao.getCategoria()
         );
+    }
 
-        return transactionResponse;
+    public TransactionResponse convertTransaction(TransactionRequest request) {
+        // Busca o usuário e a categoria para validar as IDs
+        Usuario usuario = usuarioService.getUserById(request.getUsuarioId())
+                .orElseThrow(() -> new UsuarioNotFoundException("Usuário não encontrado"));
+
+        Categoria categoria = categoriaService.getCategoriaById(request.getCategoriaId())
+                .orElseThrow(() -> new CategoriaNotFoundException("Categoria não encontrada"));
+
+        // Realiza a conversão de moeda
+        ExchangeRateService.ConversionResult conversionResult = exchangeRateService.convertCurrency(
+                request.getFrom(),
+                request.getTo(),
+                request.getValor()
+        );
+
+        // Formata a data para o formato desejado
+        String formattedDate = request.getData().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        // Mapeia o usuário para o DTO de resposta
+        UsuarioResponse usuarioResponse = UsuarioMapper.toUsuarioResponse(usuario);
+
+        // Cria o objeto `TransactionResponse` com os dados fornecidos
+        return new TransactionResponse(
+                null, // ID não será salvo aqui
+                request.getDescricao(),
+                request.getValor(),
+                request.getData().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                conversionResult.getConvertedValue(),
+                conversionResult.getExchangeRate(),
+                UsuarioMapper.toUsuarioResponse(usuario),
+                categoria
+        );
     }
 
     public Optional<Transacao> getTransactionById(Long id) {
