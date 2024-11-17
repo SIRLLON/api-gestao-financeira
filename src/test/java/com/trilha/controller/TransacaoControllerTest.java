@@ -72,6 +72,8 @@ public class TransacaoControllerTest {
                 "Compra de pão",  // Descrição
                 20.0,  // Valor
                 "2024-09-19",  // Data formatada como String
+                22.5,  // Valor convertido (exemplo fictício)
+                1.125,  // Taxa de câmbio (exemplo fictício)
                 new UsuarioResponse(1L, "Rafael", "rafaeln@email.com"),  // Exemplo de usuário retornado
                 new Categoria(1L, "Alimentação")  // Exemplo de categoria retornada
         );
@@ -87,7 +89,7 @@ public class TransacaoControllerTest {
                 .andExpect(status().isOk())  // Espera-se status 200
                 .andExpect(jsonPath("$.id").value(transactionResponse.getId()))  // Verifica se o ID da transação retornada é igual
                 .andExpect(jsonPath("$.descricao").value(transactionResponse.getDescricao()))  // Verifica se a descrição está correta
-                .andExpect(jsonPath("$.valor").value(transactionResponse.getValor()))  // Verifica se o valor está correto
+                .andExpect(jsonPath("$.valor").value(transactionResponse.getValorOriginal()))  // Verifica se o valor está correto
                 .andExpect(jsonPath("$.data").value(transactionResponse.getData()))  // Verifica se a data está correta
                 .andExpect(jsonPath("$.usuario.id").value(transactionResponse.getUsuario().getId()))  // Verifica se o ID do usuário está correto
                 .andExpect(jsonPath("$.usuario.nome").value(transactionResponse.getUsuario().getNome()))  // Verifica o nome do usuário
