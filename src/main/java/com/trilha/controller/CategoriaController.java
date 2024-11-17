@@ -1,5 +1,6 @@
 package com.trilha.controller;
 
+import com.trilha.dto.CategoriaRequest;
 import com.trilha.model.Categoria;
 import com.trilha.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,9 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @PostMapping
-    public ResponseEntity<Categoria> createCategoria(@RequestBody Categoria categoria) {
+    public ResponseEntity<Categoria> createCategoria(@RequestBody CategoriaRequest categoriaRequest) {
+        Categoria categoria = new Categoria();
+        categoria.setName(categoriaRequest.getName());
         Categoria createdCategoria = categoriaService.saveCategoria(categoria);
         return ResponseEntity.ok(createdCategoria);
     }

@@ -15,15 +15,15 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nome;
+    private String name;
 
     public Categoria() {
 
     }
 
-    public Categoria(Long id, String nome) {
+    public Categoria(Long id, String name) {
         this.id = id;
-        this.nome = nome;
+        this.name = name;
     }
 }
 

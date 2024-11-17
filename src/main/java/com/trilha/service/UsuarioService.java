@@ -6,6 +6,8 @@ import com.trilha.exception.UsuarioNotFoundException;
 import com.trilha.model.Usuario;
 import com.trilha.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +20,8 @@ import java.util.Optional;
 @Service
 public class UsuarioService {
 
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     @Autowired
     private UsuarioRepository usuarioRepository;
 
@@ -29,7 +33,7 @@ public class UsuarioService {
         Usuario usuario = new Usuario();
         usuario.setNome(usuarioRequest.getNome());
         usuario.setEmail(usuarioRequest.getEmail());
-        usuario.setSenha(usuarioRequest.getSenha());
+        usuario.setSenha(passwordEncoder.encode(usuarioRequest.getSenha())); // Criptografando a senha
         usuario = usuarioRepository.save(usuario);
 
         // Obter os dados da API externa
@@ -85,4 +89,5 @@ public class UsuarioService {
             throw new RuntimeException("Error occurred while processing the file.", e);
         }
     }
+
 }

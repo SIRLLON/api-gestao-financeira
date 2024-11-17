@@ -2,6 +2,9 @@ package com.trilha.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trilha.config.JwtUtil;
+import com.trilha.dto.TransactionRequest;
+import com.trilha.dto.TransactionResponse;
+import com.trilha.dto.UsuarioResponse;
 import com.trilha.model.Categoria;
 import com.trilha.model.Transacao;
 import com.trilha.service.TransacaoService;
@@ -16,6 +19,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -53,18 +57,43 @@ public class TransacaoControllerTest {
 
     @Test
     @WithMockUser(roles = {"TESTSC"}) // Simula um usuário com a role TESTSC
-    public void testCreateOrUpdateTransaction() throws Exception {
-        Transacao savedTransacao = new Transacao();
-        savedTransacao.setId(1L); // Configure conforme necessário
+    public void testCreateTransacao() throws Exception {
+        // Criação de um objeto TransactionRequest para enviar no corpo da requisição
+        TransactionRequest transactionRequest = new TransactionRequest();
+        transactionRequest.setDescricao("Compra de pão");
+        transactionRequest.setValor(20.0);
+        transactionRequest.setData(LocalDate.parse("2024-09-19"));
+        transactionRequest.setUsuarioId(1L);  // Supondo que o ID do usuário seja 1
+        transactionRequest.setCategoriaId(1L);  // Supondo que o ID da categoria seja 1
 
-        when(transacaoService.saveOrUpdateTransaction(any(Transacao.class))).thenReturn(savedTransacao);
+        // Criar o objeto TransactionResponse esperado
+        TransactionResponse transactionResponse = new TransactionResponse(
+                1L,  // ID da transação
+                "Compra de pão",  // Descrição
+                20.0,  // Valor
+                "2024-09-19",  // Data formatada como String
+                new UsuarioResponse(1L, "Rafael", "rafaeln@email.com"),  // Exemplo de usuário retornado
+                new Categoria(1L, "Alimentação")  // Exemplo de categoria retornada
+        );
 
+        // Mock do serviço para retornar o TransactionResponse criado
+        when(transacaoService.createTransacao(any(TransactionRequest.class))).thenReturn(transactionResponse);
+
+        // Execução do teste
         mockMvc.perform(post("/api/transacao")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(transacao)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(savedTransacao.getId())); // Ajuste conforme o seu objeto Transacao
+                        .content(objectMapper.writeValueAsString(transactionRequest)))  // Enviando o TransactionRequest
+                .andExpect(status().isOk())  // Espera-se status 200
+                .andExpect(jsonPath("$.id").value(transactionResponse.getId()))  // Verifica se o ID da transação retornada é igual
+                .andExpect(jsonPath("$.descricao").value(transactionResponse.getDescricao()))  // Verifica se a descrição está correta
+                .andExpect(jsonPath("$.valor").value(transactionResponse.getValor()))  // Verifica se o valor está correto
+                .andExpect(jsonPath("$.data").value(transactionResponse.getData()))  // Verifica se a data está correta
+                .andExpect(jsonPath("$.usuario.id").value(transactionResponse.getUsuario().getId()))  // Verifica se o ID do usuário está correto
+                .andExpect(jsonPath("$.usuario.nome").value(transactionResponse.getUsuario().getNome()))  // Verifica o nome do usuário
+                .andExpect(jsonPath("$.usuario.email").value(transactionResponse.getUsuario().getEmail()))  // Verifica o e-mail do usuário
+                .andExpect(jsonPath("$.categoria.id").value(transactionResponse.getCategoria().getId()))  // Verifica o ID da categoria
+                .andExpect(jsonPath("$.categoria.name").value(transactionResponse.getCategoria().getName()));  // Verifica o nome da categoria
     }
 
     @Test
