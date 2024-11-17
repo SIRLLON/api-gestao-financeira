@@ -1,5 +1,7 @@
 package com.trilha.service;
 
+import com.trilha.dto.ExternalAccountResponse;
+import com.trilha.dto.UsuarioRequest;
 import com.trilha.exception.UsuarioNotFoundException;
 import com.trilha.model.Usuario;
 import com.trilha.repository.UsuarioRepository;
@@ -8,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -34,7 +38,7 @@ public class UsuarioService {
         // Montar a resposta
         Map<String, Object> response = new HashMap<>();
         response.put("id", usuario.getId());
-        response.put("nome", usuario.getNome());
+        response.put("name", usuario.getNome());
         response.put("email", usuario.getEmail());
         response.put("accountNumber", externalAccount.getAccountNumber());
         response.put("balance", externalAccount.getBalance());
@@ -42,8 +46,12 @@ public class UsuarioService {
         return response;
     }
 
-    public Usuario saveUser(Usuario usuario) {
-        return usuarioRepository.save(usuario);
+    public Usuario createUser(UsuarioRequest usuarioRequest) {
+        Usuario usuario = new Usuario();
+        usuario.setNome(usuarioRequest.getNome());
+        usuario.setEmail(usuarioRequest.getEmail());
+        usuario.setSenha(usuarioRequest.getSenha());
+        return usuarioRepository.save(usuario); // Salva no banco de dados
     }
 
     public List<Usuario> getAllUsers() {

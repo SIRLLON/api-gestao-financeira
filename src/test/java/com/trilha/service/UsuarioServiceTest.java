@@ -1,5 +1,6 @@
 package com.trilha.service;
 
+import com.trilha.dto.UsuarioRequest;
 import com.trilha.exception.UsuarioNotFoundException;
 import com.trilha.model.Usuario;
 import com.trilha.repository.UsuarioRepository;
@@ -11,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,11 +37,32 @@ class UsuarioServiceTest {
     }
 
     @Test
-    void whenSaveUser_thenReturnSavedUser() {
-        when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario);
-        Usuario savedUser = usuarioService.saveUser(usuario);
-        assertThat(savedUser).isEqualTo(usuario);
-        verify(usuarioRepository, times(1)).save(usuario);
+    void whenCreateUser_thenReturnCreatedUser() {
+        // Cria um objeto UsuarioRequest com dados de exemplo
+        UsuarioRequest usuarioRequest = new UsuarioRequest();
+        usuarioRequest.setNome("Usuário Teste");
+        usuarioRequest.setEmail("usuario@example.com");
+        usuarioRequest.setSenha("senha123");
+
+        // Mock do repositório para retornar o usuário criado
+        Usuario usuarioCriado = new Usuario();
+        usuarioCriado.setId(1L);
+        usuarioCriado.setNome(usuarioRequest.getNome());
+        usuarioCriado.setEmail(usuarioRequest.getEmail());
+        usuarioCriado.setSenha(usuarioRequest.getSenha());
+
+        when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuarioCriado);
+
+        // Chama o método de serviço
+        Map<String, Object> response = usuarioService.createUserWithAccount(usuarioRequest);
+
+        // Verifica se o retorno contém as informações do usuário criado
+        assertThat(response).containsEntry("id", usuarioCriado.getId());
+        assertThat(response).containsEntry("nome", usuarioCriado.getNome());
+        assertThat(response).containsEntry("email", usuarioCriado.getEmail());
+
+        // Verifica que o método save foi chamado uma vez
+        verify(usuarioRepository, times(1)).save(any(Usuario.class));
     }
 
     @Test

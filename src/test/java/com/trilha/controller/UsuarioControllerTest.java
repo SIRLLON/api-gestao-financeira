@@ -2,6 +2,7 @@ package com.trilha.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trilha.config.JwtUtil;
+import com.trilha.dto.UsuarioRequest;
 import com.trilha.model.Usuario;
 import com.trilha.service.ExcelImportService;
 import com.trilha.service.UsuarioService;
@@ -23,6 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -65,19 +67,34 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     @Test
     @WithMockUser(username = "testUser", roles = {"TESTSC"})
     void whenCreateUser_thenReturnCreatedUser() throws Exception {
-        when(usuarioService.saveUser(any(Usuario.class))).thenReturn(usuario);
+        // Cria um objeto UsuarioRequest com dados de exemplo
+        UsuarioRequest usuarioRequest = new UsuarioRequest();
+        usuarioRequest.setNome("Usuário Teste");
+        usuarioRequest.setEmail("usuario@example.com");
+        usuarioRequest.setSenha("senha123");
 
+        // Mock do serviço para retornar uma resposta fictícia
+        Map<String, Object> response = Map.of(
+                "id", 1L,
+                "nome", usuarioRequest.getNome(),
+                "email", usuarioRequest.getEmail()
+        );
+        when(usuarioService.createUserWithAccount(any(UsuarioRequest.class))).thenReturn(response);
+
+        // Realiza a requisição POST para criar o usuário
         mockMvc.perform(post("/api/usuarios")
                         .with(csrf()) // Inclui o CSRF token na requisição
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(usuario)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(usuario.getId()))
-                .andExpect(jsonPath("$.nome").value(usuario.getNome()))
-                .andExpect(jsonPath("$.email").value(usuario.getEmail()));
+                        .content(objectMapper.writeValueAsString(usuarioRequest)))
+                .andExpect(status().isCreated()) // Espera o status HTTP 201 (Created)
+                .andExpect(jsonPath("$.id").value(response.get("id")))
+                .andExpect(jsonPath("$.nome").value(response.get("nome")))
+                .andExpect(jsonPath("$.email").value(response.get("email")));
 
-        verify(usuarioService, times(1)).saveUser(any(Usuario.class));
+        // Verifica que o método do serviço foi chamado
+        verify(usuarioService, times(1)).createUserWithAccount(any(UsuarioRequest.class));
     }
+
 
     @Test
     @WithMockUser(username = "testUser", roles = {"TESTSC"})
