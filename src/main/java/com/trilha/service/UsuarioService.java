@@ -17,6 +17,31 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private ExternalAccountService externalAccountService;
+
+    public Map<String, Object> createUserWithAccount(UsuarioRequest usuarioRequest) {
+        // Criar o usuário no banco de dados
+        Usuario usuario = new Usuario();
+        usuario.setNome(usuarioRequest.getNome());
+        usuario.setEmail(usuarioRequest.getEmail());
+        usuario.setSenha(usuarioRequest.getSenha());
+        usuario = usuarioRepository.save(usuario);
+
+        // Obter os dados da API externa
+        ExternalAccountResponse externalAccount = externalAccountService.getAccountData(usuario.getId());
+
+        // Montar a resposta
+        Map<String, Object> response = new HashMap<>();
+        response.put("id", usuario.getId());
+        response.put("nome", usuario.getNome());
+        response.put("email", usuario.getEmail());
+        response.put("accountNumber", externalAccount.getAccountNumber());
+        response.put("balance", externalAccount.getBalance());
+
+        return response;
+    }
+
     public Usuario saveUser(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
