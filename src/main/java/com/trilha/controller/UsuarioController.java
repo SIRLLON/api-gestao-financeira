@@ -21,9 +21,9 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<Usuario> createUser(@Valid @RequestBody Usuario usuario) {
-        Usuario createdUsuario = usuarioService.saveUser(usuario);
-        return ResponseEntity.ok(createdUsuario);
+    public ResponseEntity<Map<String, Object>> createUser(@RequestBody UsuarioRequest usuarioRequest) {
+        Map<String, Object> response = usuarioService.createUserWithAccount(usuarioRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
