@@ -36,8 +36,9 @@ public class SecurityConfig {
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // Adiciona o filtro JWT
                 .headers(headers -> headers
-                        .contentSecurityPolicy("frame-ancestors 'self'") // Permite o carregamento de iframe de mesma origem
-                );
+                        .contentSecurityPolicy(csp -> csp
+                                .policyDirectives("frame-ancestors 'self'") // Configuração de CSP recomendada
+                        )                );
 
         return http.build();
     }

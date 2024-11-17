@@ -1,12 +1,15 @@
 package com.trilha.controller;
 
+import com.trilha.dto.TransactionRequest;
 import com.trilha.model.Categoria;
 import com.trilha.model.Transacao;
+import com.trilha.service.ExchangeRateService;
 import com.trilha.service.TransacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -17,6 +20,37 @@ public class TransacaoController {
 
     @Autowired
     private TransacaoService transacaoService;
+
+    @Autowired
+    private ExchangeRateService exchangeRateService;
+
+    @GetMapping("/converter")
+    public ResponseEntity<Map<String, Object>> convertCurrency(
+            @RequestParam String from,
+            @RequestParam String to,
+            @RequestParam Double valor) {
+        ExchangeRateService.ConversionResult conversionResult = exchangeRateService.convertCurrency(from, to, valor);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("convertedValue", conversionResult.getConvertedValue());
+        response.put("exchangeRate", conversionResult.getExchangeRate());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/converter")
+    public ResponseEntity<Map<String, Object>> convertTransaction(@RequestBody TransactionRequest request) {
+        ExchangeRateService.ConversionResult conversionResult = exchangeRateService.convertCurrency(request.getFrom(), request.getTo(), request.getValor());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("descricao", request.getDescricao());
+        response.put("valorOriginal", request.getValor());
+        response.put("convertedValue", conversionResult.getConvertedValue());
+        response.put("exchangeRate", conversionResult.getExchangeRate());
+        response.put("data", request.getData());
+
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping
     public ResponseEntity<Transacao> createOrUpdateTransaction(@RequestBody Transacao transacao) {
