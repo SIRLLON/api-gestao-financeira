@@ -32,7 +32,7 @@ class CategoriaServiceTest {
         MockitoAnnotations.openMocks(this);
         categoria = new Categoria();
         categoria.setId(1L);
-        categoria.setNome("Teste Categoria");
+        categoria.setName("Teste Categoria");
     }
 
     @Test
@@ -63,7 +63,7 @@ class CategoriaServiceTest {
     void whenUpdateCategoria_thenReturnUpdatedCategoria() {
         when(categoriaRepository.existsById(categoria.getId())).thenReturn(true);
         when(categoriaRepository.save(any(Categoria.class))).thenReturn(categoria);
-        categoria.setNome("Nome Atualizado");
+        categoria.setName("Nome Atualizado");
         Optional<Categoria> updatedCategoria = categoriaService.updateCategoria(categoria.getId(), categoria);
         assertThat(updatedCategoria).isPresent().contains(categoria);
         verify(categoriaRepository, times(1)).save(categoria);

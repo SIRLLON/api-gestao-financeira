@@ -42,7 +42,7 @@ public class TransacaoRepositoryTest {
 
         // Cria e salva uma categoria para a transação
         categoria = new Categoria();
-        categoria.setNome("Categoria Teste");
+        categoria.setName("Categoria Teste");
         categoria = categoriaRepository.save(categoria); // Use o repositório adequado para salvar a categoria
     }
 

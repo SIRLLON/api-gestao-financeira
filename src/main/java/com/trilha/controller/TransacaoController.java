@@ -1,10 +1,13 @@
 package com.trilha.controller;
 
 import com.trilha.dto.TransactionRequest;
+import com.trilha.dto.TransactionResponse;
 import com.trilha.model.Categoria;
 import com.trilha.model.Transacao;
+import com.trilha.service.CategoriaService;
 import com.trilha.service.ExchangeRateService;
 import com.trilha.service.TransacaoService;
+import com.trilha.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,9 +56,10 @@ public class TransacaoController {
     }
 
     @PostMapping
-    public ResponseEntity<Transacao> createOrUpdateTransaction(@RequestBody Transacao transacao) {
-        Transacao savedTransacao = transacaoService.saveOrUpdateTransaction(transacao);
-        return ResponseEntity.ok(savedTransacao);
+    public ResponseEntity<TransactionResponse> createTransacao(@RequestBody TransactionRequest transactionRequest) {
+        // A exceção é tratada no serviço ou no @ControllerAdvice
+        TransactionResponse transactionResponse = transacaoService.createTransacao(transactionRequest);
+        return ResponseEntity.ok(transactionResponse);
     }
 
     @GetMapping("/{id}")

@@ -20,7 +20,7 @@ public class CategoriaRepositoryTest {
     public void setUp() {
         // Cria uma nova categoria para o teste
         categoria = new Categoria();
-        categoria.setNome("Categoria Teste");
+        categoria.setName("Categoria Teste");
     }
 
     @Test
@@ -33,6 +33,6 @@ public class CategoriaRepositoryTest {
 
         // Verifica se a categoria foi salva e recuperada corretamente
         assertEquals(savedCategoria.getId(), foundCategoria.getId());
-        assertEquals(savedCategoria.getNome(), foundCategoria.getNome());
+        assertEquals(savedCategoria.getName(), foundCategoria.getName());
     }
 }
