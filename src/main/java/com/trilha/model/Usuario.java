@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -26,13 +25,13 @@ public class Usuario {
     private String senha;
 
     @NotNull(message = "O saldo não pode ser nulo.")
-    private Double saldo; // Novo campo para armazenar o saldo
+    private Double saldo;
 
     @Column(nullable = true)
-    private String accountNumber; // Novo campo para o número da conta
+    private String accountNumber;
 
     public Usuario() {
-        this.saldo = 0.0; // Inicializa o saldo com um valor padrão
+        this.saldo = 0.0;
     }
 
 

@@ -23,41 +23,40 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Profile("!test") // Aplica essa configuração apenas se o perfil não for "test"
+    @Profile("!test")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Desabilita CSRF (não recomendado para produção sem tokens adequados)
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Não manter sessão
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/token").permitAll() // Permitir acesso sem autenticação
-                        .requestMatchers("/home").permitAll() // Permitir acesso ao endpoint /home
-                        .requestMatchers("/h2-console/**").permitAll() // Permitir acesso ao H2 Console
-                        // Permitir acesso ao Swagger UI
-                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // Permitir acesso ao Swagger UI e Docs
+                        .requestMatchers("/auth/token").permitAll()
+                        .requestMatchers("/home").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/v3/**", "/swagger-ui/**").permitAll()
-.anyRequest().authenticated() // Todos os outros endpoints precisam de autenticação
+                        .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // Adiciona o filtro JWT
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers(headers -> headers
                         .contentSecurityPolicy(csp -> csp
-                                .policyDirectives("frame-ancestors 'self'") // Configuração de CSP recomendada
-                        )                );
+                                .policyDirectives("frame-ancestors 'self'")
+                        ));
 
         return http.build();
     }
-    // Configuração de segurança para ambiente de testes
+
     @Bean
-    @Profile("test") // Aplica essa configuração apenas quando o perfil for "test"
+    @Profile("test")
     public SecurityFilterChain testSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Desabilita CSRF
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/token").permitAll() // Permitir acesso sem autenticação
-                        .requestMatchers("/h2-console/**").permitAll() // Permitir acesso ao H2 Console
-                        .requestMatchers("/home").permitAll() // Permitir acesso ao endpoint /home
-                        .anyRequest().permitAll() // Libera todas as outras rotas para os testes
+                        .requestMatchers("/auth/token").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/home").permitAll()
+                        .anyRequest().permitAll()
                 )
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // Não manter sessão
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }

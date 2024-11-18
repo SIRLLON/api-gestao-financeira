@@ -1,9 +1,7 @@
 package com.trilha.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+
 
 import java.util.Locale;
 import java.text.NumberFormat;
@@ -24,7 +22,6 @@ public class UsuarioResponse {
         this.balance = formatBalance(balance);
     }
 
-    // Métodos de formatação
     private String formatBalance(Double balance) {
         Locale brazil = new Locale("pt", "BR");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(brazil);
@@ -33,10 +30,9 @@ public class UsuarioResponse {
 
     private String formatAccountNumber(String accountNumber) {
         if (accountNumber.length() == 8) {
-            // Formatar conta com 8 dígitos: NNN NNNN-NN
             return accountNumber.substring(0, 3) + " " + accountNumber.substring(3, 7) + "-" + accountNumber.substring(7);
         }
-        return accountNumber; // Retorna a conta como está se o formato não corresponder
+        return accountNumber;
     }
 
 }

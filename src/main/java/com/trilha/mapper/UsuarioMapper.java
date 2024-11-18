@@ -11,8 +11,8 @@ public class UsuarioMapper {
                 usuario.getId(),
                 usuario.getNome(),
                 usuario.getEmail(),
-                externalAccount != null ? externalAccount.getAccountNumber() : null, // Formata número da conta se disponível
-                usuario.getSaldo() // Formata o saldo
+                externalAccount != null ? externalAccount.getAccountNumber() : null,
+                usuario.getSaldo()
         );
     }
 }

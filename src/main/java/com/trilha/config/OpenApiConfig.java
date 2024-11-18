@@ -13,7 +13,7 @@ public class OpenApiConfig {
     public GroupedOpenApi publicApi() {
         return GroupedOpenApi.builder()
                 .group("public")
-                .packagesToScan("com.trilha") // Ajuste para o pacote correto onde estão seus controladores
+                .packagesToScan("com.trilha")
                 .addOpenApiCustomiser(openApi -> openApi.info(new Info()
                         .title("API de Gestão Financeira")
                         .version("1.0")
