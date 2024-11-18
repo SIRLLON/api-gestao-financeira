@@ -41,4 +41,11 @@ public class Usuario {
         this.email = email;
         this.senha = senha;
     }
+
+    public Usuario(String nome, String email, String senha, Double saldo) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.saldo = saldo;
+    }
 }

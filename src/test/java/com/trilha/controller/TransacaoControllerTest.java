@@ -74,7 +74,9 @@ public class TransacaoControllerTest {
                 "2024-09-19",  // Data formatada como String
                 22.5,  // Valor convertido (exemplo fictício)
                 1.125,  // Taxa de câmbio (exemplo fictício)
-                new UsuarioResponse(1L, "Rafael", "rafaeln@email.com"),  // Exemplo de usuário retornado
+                new UsuarioResponse(1L, "Rafael", "rafaeln@email.com",
+                        "12345678",
+                        1000.0),  // Exemplo de usuário retornado
                 new Categoria(1L, "Alimentação")  // Exemplo de categoria retornada
         );
 
