@@ -10,9 +10,11 @@ import com.trilha.service.TransacaoService;
 import com.trilha.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @RestController
@@ -64,6 +66,12 @@ public class TransacaoController {
     @GetMapping
     public ResponseEntity<List<Transacao>> getAllTransactions() {
         List<Transacao> transacoes = transacaoService.getAllTransactions();
+        return ResponseEntity.ok(transacoes);
+    }
+
+    @GetMapping("/last-7-days")
+    public ResponseEntity<List<Transacao>> getTransactionsLast7Days(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+        List<Transacao> transacoes = transacaoService.getTransactionsLast7Days(date);
         return ResponseEntity.ok(transacoes);
     }
 

@@ -23,6 +23,9 @@ public class Transacao {
     private Long id;
     private String descricao;
     private Double valor;
+    private String origem;
+    private String destino;
+    private Double exchangeRate;
     @NotNull(message = "A data não pode ser nula.")
     @PastOrPresent(message = "A data deve ser do passado ou presente.")
     private LocalDate data;
@@ -34,6 +37,8 @@ public class Transacao {
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
+
+
 
     public Transacao() {
     }
@@ -52,5 +57,4 @@ public class Transacao {
         this.data = data;
         this.categoria = categoria;
     }
-
 }

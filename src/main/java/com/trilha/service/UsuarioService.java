@@ -2,7 +2,9 @@ package com.trilha.service;
 
 import com.trilha.dto.ExternalAccountResponse;
 import com.trilha.dto.UsuarioRequest;
+import com.trilha.dto.UsuarioResponse;
 import com.trilha.exception.UsuarioNotFoundException;
+import com.trilha.mapper.UsuarioMapper;
 import com.trilha.model.Usuario;
 import com.trilha.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +41,21 @@ public class UsuarioService {
         // Obter os dados da API externa
         ExternalAccountResponse externalAccount = externalAccountService.getAccountData(usuario.getId());
 
-        // Montar a resposta
+        // Atualizar o saldo do usuário no banco de dados
+        usuario.setSaldo(externalAccount.getBalance());
+        usuarioRepository.save(usuario); // Salvar o saldo no banco
+
+        // Montar a resposta formatada
+        UsuarioResponse usuarioResponse = UsuarioMapper.toUsuarioResponse(usuario, externalAccount);
+
+
+        // Criar a resposta no formato Map
         Map<String, Object> response = new HashMap<>();
-        response.put("id", usuario.getId());
-        response.put("name", usuario.getNome());
-        response.put("email", usuario.getEmail());
-        response.put("accountNumber", externalAccount.getAccountNumber());
-        response.put("balance", externalAccount.getBalance());
+        response.put("id", usuarioResponse.getId());
+        response.put("name", usuarioResponse.getNome());
+        response.put("email", usuarioResponse.getEmail());
+        response.put("accountNumber", usuarioResponse.getAccountNumber());
+        response.put("balance", usuarioResponse.getBalance());
 
         return response;
     }

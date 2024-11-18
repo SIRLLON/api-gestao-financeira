@@ -18,8 +18,15 @@ public class UsuarioRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        // Cria um novo usuário para o teste
-        usuario = new Usuario("Usuario Teste", "teste@exemplo.com", "senha123");
+        // Cria um novo usuário para o teste com saldo inicial de 1000.0
+        usuario =
+
+                new Usuario("Usuario Teste", "teste@exemplo.com", "senha123", 1000.0); // Definindo saldo inicial
+
+        // Salvando o usuário no banco de dados
+        usuario = usuarioRepository.save(usuario); // Salvando o usuário no banco e atualizando o objeto usuário com o id gerado
+
+        // Aqui você pode criar a categoria e outras dependências, se necessário, antes de realizar os testes
     }
 
     @Test
