@@ -71,21 +71,13 @@ public class RelatorioService {
             // Valor (Moeda de Origem)
             Cell valorOrigemCell = row.createCell(3);
             if (transacao.getValor() != null && transacao.getOrigem() != null) {
-                String moedaOrigem = transacao.getOrigem(); // Moeda de Origem (Ex: BRL, USD, etc.)
-                Locale locale = new Locale("pt", "BR");
+                valorOrigemCell.setCellValue(transacao.getValor()); // Exibe o valor numérico
 
-                // Caso a origem seja uma moeda diferente de BRL, vamos formatar de acordo com a moeda
-                if ("EUR".equals(moedaOrigem)) {
-                    locale = new Locale("de", "DE"); // Para Euro (EUR)
-                } else if ("USD".equals(moedaOrigem)) {
-                    locale = Locale.US; // Para Dólar (USD)
-                }
+                // Estilo numérico com 2 casas decimais
+                CellStyle numberStyle = workbook.createCellStyle();
+                numberStyle.setDataFormat(dataFormat.getFormat("0.00")); // Formato com 2 casas decimais
 
-                // Formatando de acordo com a moeda de origem
-                NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
-                valorOrigemCell.setCellValue(transacao.getValor());
-                valorOrigemCell.setCellStyle(currencyStyle);
-                currencyStyle.setDataFormat(dataFormat.getFormat(numberFormat.format(transacao.getValor())));
+                valorOrigemCell.setCellStyle(numberStyle); // Aplica o estilo de número
             } else {
                 valorOrigemCell.setCellValue("N/A");
             }
