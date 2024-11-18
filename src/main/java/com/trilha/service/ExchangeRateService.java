@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 @Service
 public class ExchangeRateService {
 
@@ -42,7 +45,19 @@ public class ExchangeRateService {
         Double convertedValue = eurValue * toRate;
         Double exchangeRate = toRate / fromRate; // Calcula a taxa de câmbio direta entre as moedas
 
+        // Formatar os valores para no máximo duas casas decimais
+        convertedValue = formatToTwoDecimalPlaces(convertedValue);
+        exchangeRate = formatToTwoDecimalPlaces(exchangeRate);
+
         return new ConversionResult(convertedValue, exchangeRate);
+    }
+
+    // Método auxiliar para formatar valores
+    private Double formatToTwoDecimalPlaces(Double value) {
+        if (value == null) return null;
+        return new BigDecimal(value)
+                .setScale(2, RoundingMode.HALF_UP) // Arredondar para 2 casas decimais
+                .doubleValue();
     }
 
     @Data

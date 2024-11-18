@@ -23,6 +23,7 @@ public class Transacao {
     private Long id;
     private String descricao;
     private Double valor;
+    private Double convertedValue; // Valor convertido
     private String origem;
     private String destino;
     private Double exchangeRate;

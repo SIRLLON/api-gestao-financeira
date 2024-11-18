@@ -9,9 +9,6 @@ import java.util.Locale;
 import java.text.NumberFormat;
 
 @Data
-@Getter
-@Setter
-@AllArgsConstructor
 public class UsuarioResponse {
     private Long id;
     private String nome;
