@@ -34,9 +34,11 @@ cd projeto
 
 4.documentação da API em http://localhost:8080/swagger-ui
 
+
+
+Esse modelo inclui uma breve descrição do projeto, destaca suas funcionalidades principais, as tecnologias utilizadas, como rodar o projeto, e como contribuir para o repositório. Você pode personalizá-lo com mais detalhes específicos do seu projeto conforme necessário.
+
 📧 Contato
 Para mais informações, entre em contato com Sirllon Cruz.
 
 🚀 Desenvolvido por Sirllon Cruz - Todos os direitos reservados.
-
-Esse modelo inclui uma breve descrição do projeto, destaca suas funcionalidades principais, as tecnologias utilizadas, como rodar o projeto, e como contribuir para o repositório. Você pode personalizá-lo com mais detalhes específicos do seu projeto conforme necessário.
