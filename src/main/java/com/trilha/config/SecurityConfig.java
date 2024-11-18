@@ -32,7 +32,10 @@ public class SecurityConfig {
                         .requestMatchers("/auth/token").permitAll() // Permitir acesso sem autenticação
                         .requestMatchers("/home").permitAll() // Permitir acesso ao endpoint /home
                         .requestMatchers("/h2-console/**").permitAll() // Permitir acesso ao H2 Console
-                        .anyRequest().authenticated() // Todos os outros endpoints precisam de autenticação
+                        // Permitir acesso ao Swagger UI
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // Permitir acesso ao Swagger UI e Docs
+                        .requestMatchers("/v3/**", "/swagger-ui/**").permitAll()
+.anyRequest().authenticated() // Todos os outros endpoints precisam de autenticação
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // Adiciona o filtro JWT
                 .headers(headers -> headers
