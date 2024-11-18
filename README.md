@@ -32,11 +32,10 @@ cd projeto
 3. Execute o projeto com o Maven:
 ./mvnw spring-boot:run
 
-4.documentação da API em http://localhost:8080/swagger-ui
+4.documentação da API:
+http://localhost:8080/swagger-ui
 
 
-
-Esse modelo inclui uma breve descrição do projeto, destaca suas funcionalidades principais, as tecnologias utilizadas, como rodar o projeto, e como contribuir para o repositório. Você pode personalizá-lo com mais detalhes específicos do seu projeto conforme necessário.
 
 📧 Contato
 Para mais informações, entre em contato com Sirllon Cruz.
