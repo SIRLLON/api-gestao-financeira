@@ -32,7 +32,7 @@ public class Transacao {
     private LocalDate data;
 
     @ManyToOne
-    @JoinColumn(name = "user_id") // chave primaria do Usuario
+    @JoinColumn(name = "user_id")
     private Usuario usuario;
 
     @ManyToOne

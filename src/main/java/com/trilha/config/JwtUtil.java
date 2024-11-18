@@ -20,8 +20,8 @@ public class JwtUtil {
     public String generateToken(String subject) {
         return Jwts.builder()
                 .setSubject(subject)
-                .setExpiration(new Date(System.currentTimeMillis() + expirationTime)) // Define a data de expiração
-                .signWith(SignatureAlgorithm.HS256, secretKey.getBytes()) // Converte a chave secreta
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(SignatureAlgorithm.HS256, secretKey.getBytes())
                 .compact();
     }
 

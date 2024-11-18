@@ -11,6 +11,5 @@ import java.util.List;
 public interface TransacaoRepository extends JpaRepository<Transacao, Long> {
     List<Transacao> findByUsuarioId(Long usuarioId);
 
-    // Método para buscar transações entre duas datas
     List<Transacao> findByDataBetween(LocalDate startDate, LocalDate endDate);
 }

@@ -28,19 +28,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UsuarioNotFoundException.class)
     public ResponseEntity<String> handleUsuarioNotFound(UsuarioNotFoundException ex) {
-        // Personalize a resposta para o erro de usuário não encontrado
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado: " + ex.getMessage());
     }
 
     @ExceptionHandler(CategoriaNotFoundException.class)
     public ResponseEntity<String> handleCategoriaNotFound(CategoriaNotFoundException ex) {
-        // Personalize a resposta para o erro de categoria não encontrada
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Categoria não encontrada: " + ex.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeneralException(Exception ex) {
-        // Resposta padrão para exceções genéricas
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno: " + ex.getMessage());
     }
 }
