@@ -135,12 +135,13 @@ public class TransacaoService {
         exchangeRate = conversionResult.getExchangeRate();  // Taxa de câmbio utilizada na conversão
 
         // Substituir o valor com o valor convertido
-        valor = Double.valueOf(convertedValue);
+        //valor = Double.valueOf(convertedValue);
 
         // Criar a transação com os dados
         Transacao transacao = new Transacao();
         transacao.setDescricao(request.getDescricao());
         transacao.setValor(valor);
+        transacao.setConvertedValue(convertedValue);  // Armazena o valor convertido
         transacao.setData(request.getData());
         transacao.setUsuario(usuario);
         transacao.setCategoria(categoria);

@@ -28,6 +28,9 @@ public class Usuario {
     @NotNull(message = "O saldo não pode ser nulo.")
     private Double saldo; // Novo campo para armazenar o saldo
 
+    @Column(nullable = true)
+    private String accountNumber; // Novo campo para o número da conta
+
     public Usuario() {
         this.saldo = 0.0; // Inicializa o saldo com um valor padrão
     }
@@ -37,5 +40,12 @@ public class Usuario {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
+    }
+
+    public Usuario(String nome, String email, String senha, Double saldo) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.saldo = saldo;
     }
 }

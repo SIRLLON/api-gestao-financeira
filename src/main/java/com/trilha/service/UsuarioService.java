@@ -41,9 +41,10 @@ public class UsuarioService {
         // Obter os dados da API externa
         ExternalAccountResponse externalAccount = externalAccountService.getAccountData(usuario.getId());
 
-        // Atualizar o saldo do usuário no banco de dados
+        // Atualizar o saldo e o número da conta no banco de dados
         usuario.setSaldo(externalAccount.getBalance());
-        usuarioRepository.save(usuario); // Salvar o saldo no banco
+        usuario.setAccountNumber(externalAccount.getAccountNumber());
+        usuarioRepository.save(usuario); // Salvar no banco
 
         // Montar a resposta formatada
         UsuarioResponse usuarioResponse = UsuarioMapper.toUsuarioResponse(usuario, externalAccount);
