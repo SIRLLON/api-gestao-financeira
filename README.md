@@ -23,12 +23,16 @@ Bem-vindo à API de Gestão Financeira, uma solução robusta para gerenciamento
 ## 🔧 Como Rodar o Projeto
 
 1. Clone o repositório:
-
    ```bash
    git clone https://github.com/seu-usuario/projeto.git
 
+2. Navegue até o diretório do projeto:
+cd projeto
 
-documentação da API em http://localhost:8080/swagger-ui
+3. Execute o projeto com o Maven:
+./mvnw spring-boot:run
+
+4.documentação da API em http://localhost:8080/swagger-ui
 
 📧 Contato
 Para mais informações, entre em contato com Sirllon Cruz.
