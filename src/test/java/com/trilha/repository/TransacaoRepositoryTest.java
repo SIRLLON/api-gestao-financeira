@@ -38,6 +38,7 @@ public class TransacaoRepositoryTest {
         usuario.setNome("Test User");
         usuario.setEmail("testuser@example.com");
         usuario.setSenha("senha"); // Defina a senha conforme necessário
+        usuario.setSaldo(1000.0);
         usuario = usuarioRepository.save(usuario);
 
         // Cria e salva uma categoria para a transação
@@ -48,12 +49,22 @@ public class TransacaoRepositoryTest {
 
     @Test
     public void testFindByUsuarioId() {
-        Transacao transacao1 = new Transacao("Compra", 50.0, LocalDate.now(), categoria);
+        // Criação e salvamento de uma transação
+        Transacao transacao1 = new Transacao();
+        transacao1.setDescricao("Compra");
+        transacao1.setValor(50.0);
+        transacao1.setData(LocalDate.now());
+        transacao1.setCategoria(categoria);
         transacao1.setUsuario(usuario);
+        transacaoRepository.save(transacao1);        transacao1.setUsuario(usuario);
         transacaoRepository.save(transacao1);
 
+        // Recuperando as transações do banco de dados
         List<Transacao> transacoes = transacaoRepository.findByUsuarioId(usuario.getId());
-        assertEquals(1, transacoes.size());
-        assertEquals("Compra", transacoes.get(0).getDescricao());
+
+        // Verificando se a transação foi salva corretamente
+        assertEquals(1, transacoes.size(), "Deve retornar uma transação");
+        assertEquals("Compra", transacoes.get(0).getDescricao(), "A descrição da transação deve ser 'Compra'");
+        assertEquals(usuario.getId(), transacoes.get(0).getUsuario().getId(), "O ID do usuário deve ser o mesmo");
     }
 }
