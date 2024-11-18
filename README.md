@@ -1,6 +1,6 @@
 # 📊 API de Gestão Financeira
 
-Bem-vindo à API de Gestão Financeira, uma solução robusta para gerenciamento de dados financeiros de usuários, transações bancárias e taxas de câmbio, projetada para ser integrada com sistemas bancários e aplicativos de finanças pessoais.
+Bem-vindo à API de Gestão Financeira, uma solução para gerenciamento de dados financeiros de usuários, transações bancárias e taxas de câmbio, projetada para ser integrada com sistemas bancários e aplicativos de finanças pessoais.
 
 ## 🚀 Funcionalidades Principais
 
