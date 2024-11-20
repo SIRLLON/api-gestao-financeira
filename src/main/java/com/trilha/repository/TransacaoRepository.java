@@ -13,3 +13,5 @@ public interface TransacaoRepository extends JpaRepository<Transacao, Long> {
 
     List<Transacao> findByDataBetween(LocalDate startDate, LocalDate endDate);
 }
+//console do h2
+//http://localhost:8080/h2-console/login.do?jsessionid=47fc5379e94fee11ae55fbe46f872248
